@@ -72,7 +72,7 @@ Forud for indlæsningen af csv-filen er:
 * Tekst-kolonne blevet renset i Python, da `.str.replace()`-metoden der, fungerer betydeligt hurtigere en `gsub()`-metoden i R  
 
 ```{r}
-jobs_data <- read_csv("../laerer_test_renset.csv")
+jobs_data <- read_csv("../datasets/laerer_test_renset.csv")
 ```
 
 
@@ -180,7 +180,7 @@ ________________________________________________________________________________
 **Frasorter udenlandske opslag**
 Der indlæses en liste over navne der er fundet i kommune-kolonnen
 ```{r}
-Lok_excel <- read_excel('/work/208886/Ikke-danske_lokationer.xlsx')
+Lok_excel <- read_excel('../datasets/Ikke-danske_lokationer.xlsx')
 ```
 
 Loc_excel anvendes nu til at frasortere udenlandske opslag 
@@ -522,7 +522,7 @@ jobs_teacher_filter <- jobs_teacher_filter[c("overskrift", "arbejdsplads", "komm
 **Registermetoden**  
 Indlæsning af registerdata til at finde nogle skolenavne
 ```{r}
-folkeskole_register <- read_excel("../Registerdata fra alle grundskoler/Folkeskoler.xlsx")
+folkeskole_register <- read_excel("../datasets/Folkeskoler.xlsx")
 ```
 
 "Job i området" afsnit fjernes fra opslange
@@ -694,7 +694,7 @@ jobs_teacher_final <-
 Her anvendes en oversigt over kommuner til at trække kommunenavne ud af tekstkolonnen  
 Indlæs datasæt med kommunenavne og postnumre: 
 ```{r}
-danske_kommuner <- read_excel("kommune_postnumre.xlsx", col_types = "text")
+danske_kommuner <- read_excel("../datasets/kommune_postnumre.xlsx", col_types = "text")
 ```
 
 
@@ -750,7 +750,7 @@ kommuner <- as.data.frame(table(jobs_teacher_final$kommune_fuld))
 Kommuner fra den oprindelige kommune-kolonne udtrækkes nu i kommune_kolonne  
 "Kommune" tilføjes herefter 
 
-![kommune_kolonne.](kommune_kolonne.png)
+![kommune_kolonne.](../utils/images/kommune_kolonne.png)
 
 ```{r}
 jobs_teacher_final <- jobs_teacher_final %>% 
@@ -772,7 +772,7 @@ jobs_teacher_final <- jobs_teacher_final %>%
 Erstatter "Kommune" eller "Kommunale"  i de celler, hvor det står og tilføjer det efterfølgende igen til alle kommunerne  
 Processen er også illustreret her: 
 
-![kommune_hjemmeside.](kommune_hjemmeside.png)
+![kommune_hjemmeside.](../utils/images/kommune_hjemmeside.png)
 
 ```{r}
 jobs_teacher_final$kommune_hjemmeside <- gsub("\\s[Kk]ommune|\\s[Kk]ommunale", "", jobs_teacher_final$kommune_hjemmeside, ignore.case = T) 
@@ -788,7 +788,7 @@ Indlæs excel fil med manuelt noteret kommunenavne
 Forude for denne indlæsning er de ca. 2.000 opslag med manglende kommunenavne trukket ud, hvorefter ca. 900 kommuner er manuelt identificeret. De resterende opslag er en blanding af opslag, hvor det ikke var muligt at finde kommunen eller var opslag der burde være sorteret fra tidligere
 
 ```{r}
-kommune_missing <- read_excel("kommune_missing.xlsx")
+kommune_missing <- read_excel("../datasets/kommune_missing.xlsx")
 ```
 
 
@@ -850,12 +850,12 @@ jobs_teacher_final$kommune_fuld <- gsub("fårborg", "midtfyn", jobs_teacher_fina
 **Find kommuner ud fra byer**
 Metoden går ud på, at finde kommunen ud fra byer der fremgår i opslaget. Ved at anvende en oversigt fra PostNord over, hvilke byer der hører til hvilke kommuner, kan de to datasæt merges. Processen er illustreret nedenfor:  
 
-![kommune_fra_by.](kommune_fra_by.png)
+![kommune_fra_by.](../utils/images/kommune_fra_by.png)
 
 
 Først indlæses by_kommune filen, som er en oversigt over, hvilke byer der hører under hvilke kommuner  
 ```{r}
-by_kommune <- read_excel("by_kommune.xlsx")
+by_kommune <- read_excel("../datasets/by_kommune.xlsx")
 by_kommune$bynavn <- tolower(by_kommune$bynavn)
 ```
 
@@ -953,7 +953,7 @@ which(laerer[,9] == 2022)
 
 Indlæs filen med koder til hver kompetence
 ```{r}
-kode_df <- read_excel('/work/208886/Samletkodeliste-udenaar.xlsx')
+kode_df <- read_excel('../datasets/Samletkodeliste-udenaar.xlsx')
 ```
 
 Der udarbejdes en dictionary fra listen
@@ -974,7 +974,7 @@ word_dict <- list(Engageret = kode_df$Engageret[1:116],
 
 11 nye kolonner dannes - en for hver kompetence. Kompetencerne matches ud fra de kodede udtryk. Hvis der findes et match i et opslag noteres dette med "TRUE" i den respektive kolonne. Ellers noteres med "FALSE" 
 
-![Ordbogsmetoden.](ordbogsmetoden.png)
+![Ordbogsmetoden.](../utils/images/ordbogsmetoden.png)
 
 
 ```{r}
